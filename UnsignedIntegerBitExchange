@@ -1,0 +1,43 @@
+//14. * Write a program that exchanges bits {p, p+1, …, p+k-1) with bits {q, q+1, …, q+k-1} of given 32-bit unsigned integer.
+
+using System;
+
+class UnsignedIntegerBitExchange
+{
+    static void Main()
+    {
+        Console.Write("Please enter any number to exchange bits {p,p+1,...,p+k-1} with bits {q,q+1,...,q+k-1}: ");
+        uint number = uint.Parse(Console.ReadLine());
+        Console.WriteLine(Convert.ToString(number, 2).PadLeft(32, '0'));
+        Console.Write("p= ");
+        int p = int.Parse(Console.ReadLine());
+        Console.Write("q= ");
+        int q = int.Parse(Console.ReadLine());
+        Console.Write("k= ");
+        int k = int.Parse(Console.ReadLine());
+        int pPlus1 = p + 1;
+        int pKMinus1 = p + k - 1;
+        int qPlus1 = q + 1;
+        int qKMinus1 = q + k - 1;
+        uint mask = 1;
+        mask = mask << p;
+        uint bitP = (mask & number) >> p;                              //The solution is very similar to the previous task. In this case I just calculate what would be the bit position of all the 6 variables.
+        mask = 1u << pPlus1;                                            // I still don't know how to do it with loops and arrays.
+        uint bitPPlus1 = (mask & number) >> pPlus1;
+        mask = 1u << pKMinus1;
+        uint bitPKMinus1 = (mask & number) >> pKMinus1;
+        mask = 1u << q;
+        uint bitQ = (mask & number) >> q;
+        mask = 1u << qPlus1;
+        uint bitQPlus1 = (mask & number) >> qPlus1;
+        mask = 1u << qKMinus1;
+        uint bitQKMinus1 = (mask & number) >> qKMinus1;
+        number = (bitP == 0) ? number = ~(1u << q) & number : number = (1u << q) | number;
+        number = (bitPPlus1 == 0) ? number = ~(1u << qPlus1) & number : number = (1u << qPlus1) | number;
+        number = (bitPKMinus1 == 0) ? number = ~(1u << qKMinus1) & number : number = (1u << qKMinus1) | number;
+        number = (bitQ == 0) ? number = ~(1u << p) & number : number = (1u << p) | number;
+        number = (bitQPlus1 == 0) ? number = ~(1u << pPlus1) & number : number = (1u << pPlus1) | number;
+        number = (bitQKMinus1 == 0) ? number = ~(1u << pKMinus1) & number : number = (1u << pKMinus1) | number;
+        Console.WriteLine(Convert.ToString(number, 2).PadLeft(32, '0'));
+    }
+}
